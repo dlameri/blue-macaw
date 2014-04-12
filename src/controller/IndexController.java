@@ -1,5 +1,8 @@
 package controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import service.TwitterService;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Resource;
@@ -7,6 +10,8 @@ import br.com.caelum.vraptor.Resource;
 @Resource
 public class IndexController {
 
+	private final Logger logger = LoggerFactory.getLogger(IndexController.class);
+	
 	private TwitterService twitterService;
 	
 	public IndexController(TwitterService twitterService) {
@@ -15,6 +20,7 @@ public class IndexController {
 	
 	@Get("/")
 	public void index() {
+		logger.info("Chamada URL inicial");
 		twitterService.startListener();
 	}
 }

@@ -1,5 +1,8 @@
 package service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import service.helper.CustomTwitterListener;
 import twitter4j.FilterQuery;
 import twitter4j.Status;
@@ -8,9 +11,12 @@ import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import br.com.caelum.vraptor.ioc.Component;
+import controller.IndexController;
 
 @Component
 public class TwitterService {
+
+	private final Logger logger = LoggerFactory.getLogger(TwitterService.class);
 
 	private UserService userService;
 
@@ -19,14 +25,18 @@ public class TwitterService {
 	}
 
 	public void startListener() {
+		logger.info("Inicializando o o listener do twitter");
 		TwitterStream twitterStream = new TwitterStreamFactory().getInstance();
 
 		twitterStream.addListener(new CustomTwitterListener(this::messageReceived));
 		twitterStream.filter(filterByTrack("#bluemacaw", "bluemacaw"));
+		
+		logger.info("Listener inicializado");
 	}
 	
 	private void messageReceived(String user) {
 		if (userService.notExists(user)) {
+			logger.info("Usuário " + user + " não recebeu ainda a mensagem.");
 			if (sendResponse(user)) {
 				userService.store(user);
 			}
@@ -35,12 +45,12 @@ public class TwitterService {
 	
 	private boolean sendResponse(String user) {
 		try {
+			logger.info("Enviando mensagem para o usuário:" + user);
 			updateStatus(user + " Obrigado por falar comigo!!!");
 			
 			return true;
 		} catch (Exception ex) {
-			System.out.println("Não foi possível enviar a resposta");
-			ex.printStackTrace();
+			logger.error("Não foi possível enviar a resposta", ex);
 		}
 		
 		return false;
@@ -49,12 +59,14 @@ public class TwitterService {
 	private void updateStatus(String message) throws TwitterException {
 		Status status = TwitterFactory.getSingleton().updateStatus(message);
 		
-		System.out.println("Successfully updated the status to [" + status.getText() + "].");
+		logger.info("Status enviado: " + status.getText());
 	}
 
 	private FilterQuery filterByTrack(String... track) {
 		FilterQuery query = new FilterQuery();
 		query.track(track);
+		
+		logger.info("Tracking inicializado por: " + track);
 		
 		return query;
 	}
