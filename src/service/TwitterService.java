@@ -1,5 +1,7 @@
 package service;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,7 @@ public class TwitterService {
 		FilterQuery query = new FilterQuery();
 		query.track(track);
 		
-		logger.info("Tracking inicializado por: " + track);
+		logger.info("Tracking inicializado por: " + Arrays.asList(track).stream().reduce("", (i,j) -> i + ", " + j));
 		
 		return query;
 	}
