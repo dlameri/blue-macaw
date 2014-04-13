@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import service.TwitterService;
 import br.com.caelum.vraptor.Get;
+import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Resource;
 
 @Resource
+@Path("/")
 public class IndexController {
 
 	private final Logger logger = LoggerFactory.getLogger(IndexController.class);

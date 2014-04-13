@@ -13,7 +13,6 @@ import twitter4j.TwitterFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import br.com.caelum.vraptor.ioc.Component;
-import controller.IndexController;
 
 @Component
 public class TwitterService {
