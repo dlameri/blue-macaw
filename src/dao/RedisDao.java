@@ -16,7 +16,7 @@ public class RedisDao {
 		return jedis.exists(key);
 	}
 	
-	public void store(String key) {
-		jedis.set(key, key);
+	public void store(String key, String value) {
+		jedis.set(key, value);
 	}
 }

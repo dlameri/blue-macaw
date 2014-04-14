@@ -9,25 +9,27 @@ import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.User;
 
 public class CustomTwitterListener implements StatusListener {
 
-	private Consumer<? super String> action;
+	private Consumer<? super User> action;
 	
 	private final Logger logger = LoggerFactory.getLogger(CustomTwitterListener.class);
 	
-	public CustomTwitterListener(Consumer<? super String> action) {
+	public CustomTwitterListener(Consumer<? super User> action) {
 		this.action = action;
 	}
 
 	@Override
 	public void onStatus(Status status) {		
-		String screenName = status.getUser().getScreenName();
+		User user = status.getUser();
 		
 		logger.info("Mensagem recebida:" + status.getText());
-		logger.info("Usuário que enviou a mensagem:" + screenName);
+		logger.info("Usuário que enviou a mensagem:" + user.getScreenName());
+		logger.info("Nome completo que do usuário da mensagem:" + user.getName());
 		
-		action.accept("@" + screenName);
+		action.accept(user);
 	}
 	
 	@Override

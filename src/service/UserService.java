@@ -3,6 +3,7 @@ package service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import twitter4j.User;
 import br.com.caelum.vraptor.ioc.Component;
 import dao.RedisDao;
 
@@ -17,14 +18,14 @@ public class UserService {
 		this.redisDao = redisDao; 
 	}
 	
-	public boolean notExists(String user) {
-		logger.info("Checando a existencia do usuário:" + user);
-		return ! redisDao.exists(user);
+	public boolean notExists(User user) {
+		logger.info("Checando a existencia do usuário:" + user.getScreenName());
+		return ! redisDao.exists(user.getScreenName());
 	}
 
-	public void store(String user) {
-		logger.info("Armazenando o usuário:" + user);
-		redisDao.store(user);
+	public void store(User user) {
+		logger.info("Armazenando o usuário:" + user.getScreenName());
+		redisDao.store(user.getScreenName(), user.getName());
 	}
 
 }
